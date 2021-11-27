@@ -5,7 +5,7 @@ library(gridExtra)
 # Note that there are quotation marks when installing a package, but not when loading it
 # and remember that hashtags let you add useful notes to your code! 
 
-setwd("C:/Users/heiwu/OneDrive/Documents/course-repository-Hayward-Wong/Coding Club tutorials/R basics/tutorial 3")
+setwd("C:/Users/heiwu/OneDrive/Documents/course-repository-Hayward-Wong/Coding Club tutorials/1.R basics/tutorial 3")
 
 trees_bicuar <- read.csv("CC-5-fun-and-loop-master/trees_bicuar.csv")
 trees_mlunguya <- read.csv("CC-5-fun-and-loop-master/trees_mlunguya.csv")

@@ -7,7 +7,7 @@ library(dplyr)
 # Note that there are quotation marks when installing a package, but not when loading it
 # and remember that hashtags let you add useful notes to your code! 
 
-setwd("C:/Users/heiwu/OneDrive/Documents/course-repository-Hayward-Wong/Coding Club tutorials/R basics/tutorial 1")
+setwd("C:/Users/heiwu/OneDrive/Documents/course-repository-Hayward-Wong/Coding Club tutorials/1.R basics/tutorial 1")
 # This is an example filepath, alter to your own filepath
 
 edidiv <- read.csv("tutorial 1/edidiv.csv")  # This is the file path based on where I saved the data, your filepath will be different
