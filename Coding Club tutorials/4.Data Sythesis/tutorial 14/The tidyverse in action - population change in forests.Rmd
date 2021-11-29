@@ -1,0 +1,34 @@
+---
+title: "The tidyverse in action - population change in forests"
+author: "Hayward Wong"
+date: "29/10/2021"
+output: html_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+norm <- rnorm(100, mean = 0, sd = 1)
+```
+
+```{r}
+A <- c("a", "a", "b", "b")
+B <- c(5, 10, 15, 20)
+dataframe <- data.frame(A, B)
+plot(dataframe)
+```
+
+```{r setup, include = FALSE}
+# Packages ----
+library(tidyverse)  # Hadley Wickham's tidyverse - the theme of this tutorial
+library(broom)  # To summarise model outputs
+library(ggExtra)  # To make pretty graphs - addon package to ggplot2
+library(maps)  # To make pretty maps - warning: maps masks map from purr!
+library(RColorBrewer)  # To make pretty colours
+library(gridExtra)  # To arrange multi-plot panels
+```
+
+
+
