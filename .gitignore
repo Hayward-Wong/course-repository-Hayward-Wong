@@ -16,7 +16,7 @@
 
 # RStudio files
 .Rproj.user/
-course-repository-Hayward-Wong.Rproj
+/*.Rproj/
 
 # produced vignettes
 vignettes/*.html
