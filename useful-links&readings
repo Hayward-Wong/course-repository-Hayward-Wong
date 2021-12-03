@@ -1,0 +1,30 @@
+### Coding club
+https://ourcodingclub.github.io/tutorials.html
+
+### Favourite dplyr function ```rowwise()```
+https://cran.r-project.org/web/packages/dplyr/vignettes/rowwise.html
+https://dplyr.tidyverse.org/reference/rowwise.html#:~:text=rowwise()%20allows%20you%20to,()%20%2C%20which%20return%20a%20grouped_df
+
+
+### Github formatting
+https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax
+
+### Challenge 3 Canada goose
+https://www.r-graph-gallery.com/3d_scatter_plot.html
+https://globalnews.ca/news/7124540/canada-geese-extinction/
+https://en.wikipedia.org/wiki/Canada_goose
+
+### Challenge 3 Rmarkdown cheat sheet
+https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf
+https://rmarkdown.rstudio.com/lesson-3.html
+
+### Challenge 3 Scalepop
+https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/scale
+https://en.wikipedia.org/wiki/Feature_scaling
+https://www.alexcookson.com/post/normalizing-childrens-book-ratings/
+https://philippmasur.de/2018/05/23/how-to-center-in-multilevel-models/
+
+### New Tutorial
+http://www.sthda.com/english/wiki/a-complete-guide-to-3d-visualization-device-system-in-r-r-software-and-data-visualization
+https://bookdown.org/yihui/rmarkdown-cookbook/rgl-3d.html
+https://www.r-graph-gallery.com/3d_scatter_plot.html
