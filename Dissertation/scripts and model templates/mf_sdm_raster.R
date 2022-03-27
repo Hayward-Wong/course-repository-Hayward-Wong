@@ -9,20 +9,20 @@ library(raster)
 library(ncdf4)
 
 # Read in MF data (already prepped)
-mfdata <- fread("./Data/Formatted/mf_PA_records_scotland_mf_area500.csv")
+mfdata <- fread("C:/Users/heiwu/OneDrive/Documents/course-repository-Hayward-Wong/Dissertation/data/mf_PA_records_scotland_mf_area500.csv")
 mfdata <- mfdata[easting >= 90000]
 
 ggplot(mfdata, aes(easting, northing, color=Presence))+geom_point()
 
 
 # Read in weather data
-climate <- stack("./Data/HadUK/Processed/haduk_1km_av_climate_2000_2017.tif")
+climate <- stack("C:/Users/heiwu/OneDrive/Documents/course-repository-Hayward-Wong/Dissertation/scripts and model templates/haduk_1km_av_climate_2000_2017.tif")
 names(climate) <- c("WinterT","SpringT","SummerT","AutumnT","Rainfall")
 plot(climate)
 cor(as.matrix(climate), use = "complete.obs")
 
 # Read in land cover data
-lcm <- stack("./Data/LCM2015_GB_1km_percent_cover_aggregate_class.tif")
+lcm <- stack("C:/Users/heiwu/OneDrive/Documents/course-repository-Hayward-Wong/Dissertation/scripts and model templates/LCM2015_GB_1km_percent_cover_aggregate_class.tif")
 lcnames <- c("broadleaf.woodland",
              "coniferous.woodland",
              "arable",
@@ -39,7 +39,7 @@ lcm <- subset(lcm, lcnames[!lcnames %in% c("saltwater","freshwater")])
 lcmScot <- stack(crop(lcm, extent(90000,233000,621000,817000)))
 
 
-elev <-  raster("./Data/Elevation/elevation_wscot_1km_raster.tif")
+elev <-  raster("C:/Users/heiwu/OneDrive/Documents/course-repository-Hayward-Wong/Dissertation/scripts and model templates/elevation_wscot_1km_raster.tif")
 elev <- crop(elev, extent(lcmScot))
 crs(lcmScot) <- crs(elev)
 

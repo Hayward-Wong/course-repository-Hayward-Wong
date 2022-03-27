@@ -108,7 +108,7 @@ bnm_n <- bnm %>% select(km_sq,easting,northing,nR,minyear,maxyear)
 
 bnm_n <- bnm_n[!duplicated(bnm_n$km_sq), ]
 
-bnm_n$presence<-1
+bnm_n$Presence<-1
   
 table(bnm_n$nR)
 
@@ -117,3 +117,10 @@ table(bnm_n$nR)
 # Save formatted datasets ----
 write.csv(bnm_n, "C:/Users/heiwu/OneDrive/Documents/course-repository-Hayward-Wong/Dissertation/data/BNM_records_scotland_cs_area.csv")
 
+bnm_500 <- read.csv("C:/Users/heiwu/OneDrive/Documents/course-repository-Hayward-Wong/Dissertation/data/BNM_records_scotland_cs_area.csv")
+
+bnm_500 <- subset(bnm_500, select = -c(X))
+
+bnm_500 <- bnm_500 %>% mutate (easting = easting+500, northing = northing+500)
+
+write.csv(bnm_500, "C:/Users/heiwu/OneDrive/Documents/course-repository-Hayward-Wong/Dissertation/data/BNM_records_scotland_cs_area500.csv")
