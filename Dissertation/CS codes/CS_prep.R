@@ -122,13 +122,11 @@ bnm_n <- bnm_n[!duplicated(bnm_n$km_sq), ]
 bnm_3 <- merge(bnm_n,bnm2,by="km_sq")
 
 
-bnm_n <- bnm %>% select(km_sq,easting,northing,nR,minyear,maxyear)
-
 
 
 
 # Save formatted datasets ----
-write.csv(bnm_n, "C:/Users/heiwu/OneDrive/Documents/course-repository-Hayward-Wong/Dissertation/data/BNM_records_scotland_cs_area.csv")
+write.csv(bnm_3, "C:/Users/heiwu/OneDrive/Documents/course-repository-Hayward-Wong/Dissertation/data/BNM_records_scotland_cs_area.csv")
 
 bnm_500 <- read.csv("C:/Users/heiwu/OneDrive/Documents/course-repository-Hayward-Wong/Dissertation/data/BNM_records_scotland_cs_area.csv")
 
