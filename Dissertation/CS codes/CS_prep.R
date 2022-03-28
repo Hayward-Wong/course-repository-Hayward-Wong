@@ -8,10 +8,13 @@ library(dplyr)
 
 cs_bnm <-read.csv("C:/Users/heiwu/OneDrive/Documents/course-repository-Hayward-Wong/Dissertation/data/Chequered Skipper Scotland.csv", stringsAsFactors = FALSE)
 
+
 cs_bnm <- cs_bnm[cs_bnm$rec_year >= 2000,]
 
 cs_bnm<- cs_bnm %>% 
   mutate(adults = parse_number(adults))
+
+cs_bnm[is.na(cs_bnm)] = 0
 
 cs_bnm<- cs_bnm %>% 
   filter(is.finite(adults))
@@ -21,6 +24,7 @@ cs<- cs_bnm %>%
   
 cs<- cs %>% 
   select(gridref,km_sq,abundance,rec_month,rec_year,easting,northing)
+
 
 write.csv(cs, ".Chequered_Skipper_records_with_EN_2.csv")
 
@@ -86,6 +90,8 @@ bnm<- bnm %>%
   select(gridref,km_sq,record_dat,adults,rec_year,rec_month,rec_day,easting,northing)
 
 table(bnm$rec_month)
+table(bnm$adults)
+
 # Proportion in May - July
 nrow(bnm[bnm$rec_month,5:7])/nrow(bnm)
 
@@ -96,6 +102,11 @@ nrow(bnm[bnm$rec_month,5:7])/nrow(bnm)
 bnm <- subset(bnm, rec_month != 0)
 
 bnm <- bnm %>% subset(km_sq !="")
+
+bnm2 <- bnm %>% group_by(km_sq) %>%
+  summarise(Presence = sum(adults))
+
+bnm2<- bnm2 %>% mutate_if(is.numeric, ~1 * (. > 0))
 
 bnm <- bnm %>% group_by(km_sq) %>% mutate(nR = n_distinct(record_dat))
 
@@ -108,9 +119,11 @@ bnm_n <- bnm %>% select(km_sq,easting,northing,nR,minyear,maxyear)
 
 bnm_n <- bnm_n[!duplicated(bnm_n$km_sq), ]
 
-bnm_n$Presence<-1
-  
-table(bnm_n$nR)
+bnm_3 <- merge(bnm_n,bnm2,by="km_sq")
+
+
+bnm_n <- bnm %>% select(km_sq,easting,northing,nR,minyear,maxyear)
+
 
 
 
