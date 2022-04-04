@@ -121,12 +121,30 @@ bnm_n <- bnm_n[!duplicated(bnm_n$km_sq), ]
 
 bnm_3 <- merge(bnm_n,bnm2,by="km_sq")
 
+bnm_4 <- bnm_3 %>% select(km_sq, easting, northing,Presence)
 
+absence <- read.csv("C:/Users/heiwu/OneDrive/Documents/course-repository-Hayward-Wong/Dissertation/data/mf_PA_records_scotland_mf_area.csv", stringsAsFactors = FALSE)
 
+absence <- absence %>% subset(Presence != 1)
+
+absence <- subset(absence, select = -c(X))
+
+bnm_5 <- rbind(bnm_4,absence)
+
+bnm_5 <- bnm_5 %>% mutate(Presence = Presence.x+Presence.y)
+
+bnm_6 <- bnm_5 %>% group_by(km_sq) %>%
+  summarise(Presence = sum(Presence))
+
+bnm_7 <- bnm_5[!duplicated(bnm_5$km_sq), ]
+
+bnm_7 <- bnm_7 %>% select(km_sq,easting,northing)
+
+bnm_output <- merge(bnm_6,bnm_7,by="km_sq")
 
 
 # Save formatted datasets ----
-write.csv(bnm_3, "C:/Users/heiwu/OneDrive/Documents/course-repository-Hayward-Wong/Dissertation/data/BNM_records_scotland_cs_area.csv")
+write.csv(bnm_output, "C:/Users/heiwu/OneDrive/Documents/course-repository-Hayward-Wong/Dissertation/data/BNM_records_scotland_cs_area.csv")
 
 bnm_500 <- read.csv("C:/Users/heiwu/OneDrive/Documents/course-repository-Hayward-Wong/Dissertation/data/BNM_records_scotland_cs_area.csv")
 
