@@ -100,16 +100,20 @@ ggplot() +
     geom_polygon(data = world_clip_f, 
                  aes(x = long, y = lat, group = group),
                  fill = "gray75", colour = "black") + 
-    geom_point(data = a3, alpha = 1,size = 2.5,shape = 21,colour = "black",
+    geom_point(data = a3, alpha = 1,size = 5,shape = 21,colour = "black",
                aes(x = X, y = Y,shape = Presence,fill = Presence)) +
   scale_colour_manual(values = c("dark blue","light blue"))+ 
   scale_fill_manual(values = c("dark blue","light blue"))+
   theme_bw() +
-    xlab("Longitude (°)") +
-    ylab("Latitude (°)") + 
+    xlab("Longitude (Â°)") +
+    ylab("Latitude (Â°)") + 
     coord_quickmap()+ 
-  labs(title = "Scotland Carterocephalus palaemon Presence Records")+ # add title to the map
-  theme(plot.title = element_text(size = 15, hjust = 0.5))+
+  theme(axis.title.x = element_text(size = 20),
+        axis.text.x = element_text(size = 16),
+        axis.title.y = element_text(size = 20),
+        axis.text.y = element_text(size = 16),
+        legend.title = element_text(size=20), 
+        legend.text = element_text(size=16))+
   annotation_north_arrow(location = "tr", 
                          pad_x = unit(0.1, "in"), pad_y = unit(0.1, "in"),
                          style = north_arrow_fancy_orienteering, height = unit(1,"in"), width = unit(1,"in"))+  

@@ -47,6 +47,10 @@ crs(lcmScot) <- crs(elev)
 # Clip landcover to area of interest using elevation raster
 lcmScot <- mask(lcmScot, elev)
 
+plot(lcmScot)
+
+plot(elev)
+
 # Add a layer to the lcm raster stack for the total lc cover
 temp <- stackApply(lcmScot, indices = c(rep(1,10)), fun=sum, na.rm=TRUE)
 
