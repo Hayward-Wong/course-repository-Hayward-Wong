@@ -8,7 +8,7 @@ library(ncdf4)
 
 # Read in average temperature data
 seasmeantemp <- list()
-for(k in 2000:2017){
+for(k in 2000:2019){
   seasmeantemp[[paste0("year",k)]] <- stack(paste0("./Data/HadUK/meantemp/tas_hadukgrid_uk_1km_seas_",k,"01-",k,"12.nc"))
 }
 

@@ -19,7 +19,9 @@ ggplot(csdata, aes(easting, northing, color=Presence))+geom_point()
 # Read in weather data
 climate <- stack("C:/Users/heiwu/OneDrive/Documents/course-repository-Hayward-Wong/Dissertation/scripts and model templates/haduk_1km_av_climate_2000_2017.tif")
 names(climate) <- c("WinterT","SpringT","SummerT","AutumnT","Rainfall")
+
 plot(climate)
+
 cor(as.matrix(climate), use = "complete.obs")
 
 # Read in land cover data
@@ -57,6 +59,9 @@ temp <- stackApply(lcmScot, indices = c(rep(1,10)), fun=sum, na.rm=TRUE)
 # Clip climate
 crs(climate) <- crs(elev)
 climateScot <- mask(climate, elev)
+
+plot(climate)
+plot(climateScot)
 
 # Remove 1km with less than 25% landcover classified
 lcmScot[temp < 25] <- NA
@@ -150,6 +155,8 @@ biomdata2 <- BIOMOD_FormatingData(resp.var = csdata_sp,
                                   expl.var =  subset(covsfit, 
                                                      names(covsfit)[!names(covsfit) %in% names(minvi)]),
                                   resp.name="Chequered Skipper")
+
+
 biomoutput2 <- BIOMOD_Modeling(biomdata2,
                                models = c("GLM","GBM","GAM","RF","MARS","CTA","ANN"),
                                model.options = myBiomodOption,
@@ -214,7 +221,7 @@ plot(biomEM_f)
 
 biomEM_fpred <- get_predictions(biomEM_f)
 
-plot(biomEM_fpred)
+
 
 writeRaster(biomEM_fpred, "C:/Users/heiwu/OneDrive/Documents/course-repository-Hayward-Wong/Dissertation/CS_ensemble_test5.tif", overwrite=TRUE)
 
