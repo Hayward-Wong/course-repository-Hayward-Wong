@@ -149,5 +149,8 @@ anova(bm1)
 
 bm4 <- lm(avg ~ rec_year,
           data = bnm_avg)
+
+plot(bm4)
+
 summary(bm4)#F-statistic: 5.723 on 1 and 18 DF,  p-value: 0.02787
 

@@ -8,6 +8,8 @@ library(ggplot2)
 library(rgdal)
 library(raster)
 library(ncdf4)
+library(tidyverse)
+library(ecospat)
 
 # Read in CS data (already prepped)
 csdata <- fread("C:/Users/heiwu/OneDrive/Documents/course-repository-Hayward-Wong/Dissertation/data/BNM_records_scotland_cs_area500.csv")
@@ -20,7 +22,7 @@ ggplot(csdata, aes(easting, northing, color=Presence))+geom_point()
 climate <- stack("C:/Users/heiwu/OneDrive/Documents/course-repository-Hayward-Wong/Dissertation/scripts and model templates/haduk_1km_av_climate_2000_2017.tif")
 names(climate) <- c("WinterT","SpringT","SummerT","AutumnT","Rainfall")
 
-plot(climate)
+#plot(climate)
 
 cor(as.matrix(climate), use = "complete.obs")
 
@@ -49,9 +51,9 @@ crs(lcmScot) <- crs(elev)
 # Clip landcover to area of interest using elevation raster
 lcmScot <- mask(lcmScot, elev)
 
-plot(lcmScot)
+#plot(lcmScot)
 
-plot(elev)
+#plot(elev)
 
 # Add a layer to the lcm raster stack for the total lc cover
 temp <- stackApply(lcmScot, indices = c(rep(1,10)), fun=sum, na.rm=TRUE)
@@ -60,8 +62,8 @@ temp <- stackApply(lcmScot, indices = c(rep(1,10)), fun=sum, na.rm=TRUE)
 crs(climate) <- crs(elev)
 climateScot <- mask(climate, elev)
 
-plot(climate)
-plot(climateScot)
+#plot(climate)
+#plot(climateScot)
 
 # Remove 1km with less than 25% landcover classified
 lcmScot[temp < 25] <- NA
@@ -193,7 +195,17 @@ biomEM <- BIOMOD_EnsembleModeling(biomoutput2,
                                   #eval.metric.quality.threshold = .7,
                                   models.eval.meth=c("TSS","ROC"),
                                   prob.mean.weight = TRUE)
-get_evaluations(biomEM)
+
+
+biomEM2 <- BIOMOD_EnsembleModeling(biomoutput2,
+                                  eval.metric="ROC",
+                                  chosen.models = modellist,
+                                  prob.mean = TRUE,
+                                  #eval.metric.quality.threshold = .7,
+                                  models.eval.meth=c("TSS","ROC"),
+                                  prob.mean.weight = TRUE)
+get_evaluations(biomEM2)
+
 
 
 
@@ -203,8 +215,8 @@ biomproj <- BIOMOD_Projection(biomoutput2,
                                      names(covsfit)[!names(covsfit) %in% names(minvi)]),
                               proj.name="Model1")
 
-plot(biomproj)
-plot(biomproj, str.grep="RUN1")
+#plot(biomproj)
+#plot(biomproj, str.grep="RUN1")
 
 all_proj <- get_projected_models(biomproj)
 mod_proj <- get_predictions(biomproj)
@@ -217,11 +229,78 @@ biomEM_f <- BIOMOD_EnsembleForecasting(EM.output = biomEM,
                                        selected.models = 
                                          "Chequered.Skipper_EMwmeanByROC_mergedAlgo_Full_AllData")
 
+
+biomEM_f2 <- BIOMOD_EnsembleForecasting(EM.output = biomEM2,
+                                       projection.output = biomproj,
+                                       selected.models = 
+                                         "Chequered.Skipper_EMwmeanByROC_mergedAlgo_Full_AllData")
+
+
 plot(biomEM_f)
+
+plot(biomEM_f2)
+
+
+
 
 biomEM_fpred <- get_predictions(biomEM_f)
 
 
+biomEM_fpred2 <- get_predictions(biomEM_f2)
+
+
+plot(biomEM_fpred)
+
+plot(biomEM_fpred2)
+
+
+threshold500 <- FilteringTransformation(biomEM_fpred2, 500)
+
+plot(threshold500)
+
+summary(threshold500)
+
+threshold.mean <- FilteringTransformation(biomEM_fpred2, 268.2489)
+
+plot(threshold.mean)
+
+
+threshold.25 <- FilteringTransformation(biomEM_fpred2, 132)
+
+
+plot(threshold.25)
+
+
+
+
+class <- matrix(c(0,0.132,1,0.132,0.999,2,0.999,1,3),nrow=3,ncol=3,byrow=TRUE)
+Categorise <- reclassify(threshold.25, class, filename='suitability classes',overwrite=TRUE)
+plot(Categorise,col=c("#f4a460","#adff2f","#008000"),legend=FALSE, xlab="Easting", ylab="Northing")
+legend('bottomleft',inset=0.01,c(3,2,1),c("Present","Potential","Unknown"),pch=c(15,15,15),
+       col = c("#008000","#adff2f","#f4a460"),box.lty=0,bg=FALSE)
+
+
+classmean <- matrix(c(0,0.268,1,0.268,0.999,2,0.999,1,3),nrow=3,ncol=3,byrow=TRUE)
+Categorisemean <- reclassify(threshold.mean, classmean, filename='suitability classes',overwrite=TRUE)
+plot(Categorisemean,col=c("#f4a460","#adff2f","#008000"),legend=FALSE, xlab="Easting", ylab="Northing")
+legend('bottomleft',inset=0.01,c(3,2,1),c("Present","Potential","Unknown"),pch=c(15,15,15),
+       col = c("#008000","#adff2f","#f4a460"),box.lty=0,bg=FALSE)
+
+
+class50 <- matrix(c(0,0.5,1,0.5,0.999,2,0.999,1,3),nrow=3,ncol=3,byrow=TRUE)
+Categorise50 <- reclassify(threshold500, classmean, filename='suitability classes',overwrite=TRUE)
+plot(Categorise50,col=c("#f4a460","#adff2f","#008000"),legend=FALSE, xlab="Easting", ylab="Northing")
+legend('bottomleft',inset=0.01,c(3,2,1),c("Present","Potential","Unknown"),pch=c(15,15,15),
+       col = c("#008000","#adff2f","#f4a460"),box.lty=0,bg=FALSE)
+
+
+cellStats(biomEM_fpred2, stat='mean')
+quantile(biomEM_fpred2, probs = c(0.25, 0.5, 0.75))
+
+
+csdata_p <- csdata_sp%>% subset(Presence !="0")
+
+buf <- create.buffer(Categorise50, csdata_p, radius=1.5)
 
 writeRaster(biomEM_fpred, "C:/Users/heiwu/OneDrive/Documents/course-repository-Hayward-Wong/Dissertation/CS_ensemble_test5.tif", overwrite=TRUE)
 
